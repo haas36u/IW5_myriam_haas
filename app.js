@@ -50,8 +50,11 @@ bot.dialog('reservation', [
     function(session){
         session.beginDialog('reservationName');
     },
+    function(session) {
+        session.beginDialog('reservationPhone');
+    },
     function(session){
-        session.send(`Je récapitule, une réservation le ${session.privateConversationData.reservationDate}, pour une table de ${session.privateConversationData.reservationNbr}, au nom de  ${session.privateConversationData.reservationName}`);
+        session.send(`Je récapitule : <br> Une réservation le ${session.privateConversationData.reservationDate}, <br>pour une table de ${session.privateConversationData.reservationNbr}, <br>au nom de ${session.privateConversationData.reservationName} <br> et nous pouvons vous contacter au ${session.privateConversationData.reservationPhone}`);
     }
 ]);
 
@@ -83,5 +86,18 @@ bot.dialog('reservationName', [
     function(session, results){
         session.privateConversationData.reservationName = results.response;
         session.endDialog('C\'est noté');
+    }
+]);
+
+bot.dialog('reservationPhone', [
+    function(session, args) {
+        if (args && args.reprompt) builder.Prompts.text(session, "Le format du numéro est invalide, il doit compter 10 chiffres");
+        else                       builder.Prompts.text(session, "Quel est votre numéro de téléphone ?");
+    },
+    function(session, results) {
+        var number = results.response;
+
+        if(number.toString().length == 10)  session.privateConversationData.reservationPhone = number;
+        else                                session.replaceDialog('reservationPhone', { reprompt: true });
     }
 ]);
