@@ -42,7 +42,7 @@ bot.dialog("mainMenu", [
 ])
 .triggerAction({
     matches: /^main menu$/i,
-    confirmPrompt: "Cela annulera votre demande. Etez-vous sûr ?"
+    confirmPrompt: "Cela annulera votre demande. Etes vous sûr ?"
 });
 
 bot.dialog('greatings', [
@@ -69,14 +69,14 @@ bot.dialog('askName', [
     "restartAskName", "Ok. Nous allons recommencer.",
     {
         matches: /^start over$/i,
-        confirmPrompt: "Cela annulera l'action. Etez-vous sûr ?"
+        confirmPrompt: "Cela annulera l'action. Etes vous sûr ?"
     }
 )
 .cancelAction(
     "cancelReservation", "Ecrivez 'main menu' pour continuer.", 
     {
         matches: /^cancel$/i,
-        confirmPrompt: "Cela annulera l'action. Etez-vous sûr ?"
+        confirmPrompt: "Cela annulera l'action. Etes vous sûr ?"
     }
 );
 
@@ -101,14 +101,14 @@ bot.dialog('reservation', [
     "restartReservation", "Ok. Nous allons recommencer.",
     {
         matches: /^start over$/i,
-        confirmPrompt: "Cela annulera votre commande. Etez-vous sûr ?"
+        confirmPrompt: "Cela annulera votre commande. Etes vous sûr ?"
     }
 )
 .cancelAction(
     "cancelReservation", "Ecrivez 'main menu' pour continuer.", 
     {
         matches: /^cancel$/i,
-        confirmPrompt: "Cela annulera votre commande. Etez-vous sûr ?"
+        confirmPrompt: "Cela annulera votre commande. Etes vous sûr ?"
     }
 );
 
@@ -145,8 +145,8 @@ bot.dialog('reservationName', [
 
 bot.dialog('reservationPhone', [
     function(session, args) {
-        if (args && args.reprompt) builder.Prompts.text(session, "Le format du numéro est invalide, il doit compter 10 chiffres");
-        else                       builder.Prompts.text(session, "Quel est votre numéro de téléphone ?");
+        if (args && args.reprompt) { builder.Prompts.text(session, "Le format du numéro est invalide, il doit compter 10 chiffres") }
+        else                       { builder.Prompts.text(session, "Quel est votre numéro de téléphone ?") }
     },
     function(session, results) {
         var number = results.response;
@@ -155,6 +155,6 @@ bot.dialog('reservationPhone', [
             session.privateConversationData.reservationPhone = number;
             session.endDialog();
         }
-        else    session.replaceDialog('reservationPhone', { reprompt: true });
+        else { session.replaceDialog('reservationPhone', { reprompt: true })};
     }
 ]);
